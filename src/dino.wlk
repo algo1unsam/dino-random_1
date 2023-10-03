@@ -59,14 +59,14 @@ object reloj {
 	method position() = game.at(1, game.height()-1)
 	
 	method pasarTiempo() {
-		//COMPLETAR
+		tiempo += 1
 	}
 	method iniciar(){
 		tiempo = 0
 		game.onTick(100,"tiempo",{self.pasarTiempo()})
 	}
 	method detener(){
-		//COMPLETAR
+		game.removeTickEvent("tiempo")
 	}
 }
 
@@ -85,14 +85,17 @@ object cactus {
 	}
 	
 	method mover(){
-		//COMPLETAR
+		position = position.left(1)
+		if(not position.x().between(0, 12)){
+			position = self.posicionInicial()
+		}
 	}
 	
 	method chocar(){
-		//COMPLETAR
+		juego.terminar()
 	}
     method detener(){
-		//COMPLETAR
+		game.removeTickEvent("moverCactus")
 	}
 }
 
@@ -113,7 +116,10 @@ object dino {
 	method position() = position
 	
 	method saltar(){
-		//COMPLETAR
+		if(self.position().y()== suelo.position().y()){
+			self.subir()
+			game.schedule(velocidad*2,{=> self.bajar()})
+		}
 	}
 	
 	method subir(){
